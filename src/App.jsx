@@ -687,7 +687,7 @@ function RecipeCard({ recipe, userRating, onRate, idx }) {
 }
 
 async function searchRecipes(query) {
-  const response = await fetch(`http://127.0.0.1:8000/search?q=${encodeURIComponent(query)}`);
+  const response = await fetch(`https://flavorank-backend.onrender.com/search?q=${encodeURIComponent(query)}`);
   const data = await response.json();
   return data.results || [];
 }
