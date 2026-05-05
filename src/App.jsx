@@ -30,7 +30,6 @@ const STYLES = `
 
   .page { min-height: 100vh; }
 
-  /* ── HERO ── */
   .hero {
     min-height: 100vh;
     display: flex;
@@ -192,11 +191,7 @@ const STYLES = `
     background: rgba(196,98,45,0.04);
   }
 
-  /* ── RESULTS PAGE ── */
-  .results-page {
-    min-height: 100vh;
-    background: var(--cream);
-  }
+  .results-page { min-height: 100vh; background: var(--cream); }
 
   .results-header {
     background: white;
@@ -265,12 +260,7 @@ const STYLES = `
     gap: 2.5rem;
   }
 
-  /* ── SIDEBAR ── */
-  .sidebar {
-    position: sticky;
-    top: 90px;
-    height: fit-content;
-  }
+  .sidebar { position: sticky; top: 90px; height: fit-content; }
 
   .sidebar-section {
     background: white;
@@ -291,21 +281,7 @@ const STYLES = `
     gap: 0.5rem;
   }
 
-  .filter-group { margin-bottom: 0.8rem; }
-  .filter-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--stone);
-    margin-bottom: 0.5rem;
-    display: block;
-  }
-  .filter-pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
-  }
+  .filter-pills { display: flex; flex-wrap: wrap; gap: 0.35rem; }
   .filter-pill {
     font-size: 0.78rem;
     font-weight: 500;
@@ -323,11 +299,7 @@ const STYLES = `
     border-color: var(--terracotta);
   }
 
-  .stars-filter {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
+  .stars-filter { display: flex; flex-direction: column; gap: 0.3rem; }
   .stars-row {
     display: flex;
     align-items: center;
@@ -341,13 +313,7 @@ const STYLES = `
   .stars-row input { accent-color: var(--terracotta); }
   .stars-row span { font-size: 0.82rem; color: var(--stone); }
 
-  /* ── RESULTS ── */
-  .results-count {
-    font-size: 0.82rem;
-    color: var(--stone);
-    margin-bottom: 1.2rem;
-    font-weight: 500;
-  }
+  .results-count { font-size: 0.82rem; color: var(--stone); margin-bottom: 1.2rem; font-weight: 500; }
   .results-count strong { color: var(--charcoal); }
 
   .sort-row {
@@ -375,11 +341,28 @@ const STYLES = `
     background: rgba(196,98,45,0.06);
   }
 
-  .recipe-grid {
+  .section-divider {
     display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 1.5rem 0 1rem;
   }
+  .section-divider span {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--stone);
+    white-space: nowrap;
+  }
+  .section-divider::before, .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--sand);
+  }
+
+  .recipe-grid { display: flex; flex-direction: column; gap: 1.2rem; }
 
   .recipe-card {
     background: white;
@@ -389,12 +372,14 @@ const STYLES = `
     display: flex;
     transition: box-shadow 0.2s, transform 0.2s;
     cursor: pointer;
-    text-decoration: none;
-    color: inherit;
   }
   .recipe-card:hover {
     box-shadow: 0 8px 32px rgba(196,98,45,0.12);
     transform: translateY(-2px);
+  }
+  .recipe-card.unrated {
+    border-style: dashed;
+    opacity: 0.92;
   }
 
   .card-image {
@@ -479,7 +464,6 @@ const STYLES = `
     color: var(--stone);
     font-weight: 500;
   }
-  .meta-chip svg { opacity: 0.7; }
 
   .card-bottom {
     display: flex;
@@ -490,11 +474,7 @@ const STYLES = `
     border-top: 1px solid var(--sand);
   }
 
-  .web-rating {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-  }
+  .web-rating { display: flex; flex-direction: column; gap: 0.15rem; }
   .rating-label { font-size: 0.67rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--stone); }
   .stars-display { display: flex; align-items: center; gap: 0.25rem; }
   .star-icon { font-size: 0.9rem; line-height: 1; }
@@ -504,12 +484,21 @@ const STYLES = `
   .rating-num { font-size: 0.85rem; font-weight: 700; color: var(--charcoal); margin-left: 0.2rem; }
   .rating-count { font-size: 0.72rem; color: var(--stone); margin-left: 0.1rem; }
 
-  .your-rating {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-    align-items: flex-end;
+  .unrated-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--stone);
+    background: var(--cream);
+    border: 1px dashed var(--stone-light);
+    border-radius: 20px;
+    padding: 0.25rem 0.7rem;
+    font-style: italic;
   }
+
+  .your-rating { display: flex; flex-direction: column; gap: 0.15rem; align-items: flex-end; }
   .your-stars { display: flex; gap: 0.15rem; }
   .your-star {
     font-size: 1.1rem;
@@ -540,52 +529,6 @@ const STYLES = `
     border-color: var(--terracotta);
   }
 
-  /* ── LOADING ── */
-  .loading-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 4rem 2rem;
-    text-align: center;
-  }
-
-  .loading-spinner {
-    width: 48px; height: 48px;
-    border: 3px solid var(--sand);
-    border-top-color: var(--terracotta);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-
-  .loading-text {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    font-style: italic;
-    color: var(--stone);
-  }
-
-  .loading-sub {
-    font-size: 0.82rem;
-    color: var(--stone-light);
-  }
-
-  /* ── TOASTS / EMPTY ── */
-  .empty-state {
-    text-align: center;
-    padding: 4rem 2rem;
-    color: var(--stone);
-  }
-  .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
-  .empty-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--charcoal);
-    margin-bottom: 0.5rem;
-  }
-
-  /* ── RATED BADGE ── */
   .rated-badge {
     display: inline-flex;
     align-items: center;
@@ -599,7 +542,39 @@ const STYLES = `
     padding: 0.2rem 0.6rem;
   }
 
-  /* ── ANIMATIONS ── */
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+  .loading-spinner {
+    width: 48px; height: 48px;
+    border: 3px solid var(--sand);
+    border-top-color: var(--terracotta);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  .loading-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--stone);
+  }
+  .loading-sub { font-size: 0.82rem; color: var(--stone-light); }
+
+  .empty-state { text-align: center; padding: 4rem 2rem; color: var(--stone); }
+  .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
+  .empty-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--charcoal);
+    margin-bottom: 0.5rem;
+  }
+
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -634,7 +609,7 @@ function StarDisplay({ rating, count }) {
         return <span key={i} className={`star-icon ${cls}`}>★</span>;
       })}
       <span className="rating-num">{rating.toFixed(1)}</span>
-      {count && <span className="rating-count">({count.toLocaleString()})</span>}
+      {count > 0 && <span className="rating-count">({count.toLocaleString()})</span>}
     </div>
   );
 }
@@ -659,17 +634,21 @@ function YourStars({ value, onRate }) {
 
 function RecipeCard({ recipe, userRating, onRate, idx }) {
   const emoji = ["🍞", "🍗", "🍝", "🥧", "🍰", "🥩", "🍜", "🥗", "🍕", "🍪"][idx % 10];
+  const isUnrated = recipe.unrated || !recipe.webRating;
 
   return (
-    <div className="recipe-card" style={{ animationDelay: `${idx * 0.07}s` }}>
-      <div className="card-image">{recipe.image ? (
-        <img src={recipe.image} alt={recipe.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => { e.target.style.display = "none"; }} />
-      ) : emoji}</div>
+    <div className={`recipe-card ${isUnrated ? "unrated" : ""}`} style={{ animationDelay: `${idx * 0.07}s` }}>
+      <div className="card-image">
+        {recipe.image ? (
+          <img src={recipe.image} alt={recipe.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => { e.target.style.display = "none"; }} />
+        ) : emoji}
+      </div>
       <div className="card-body">
         <div className="card-top">
           <div className="card-source">
-            <div className="source-dot">{recipe.source[0]?.toUpperCase()}</div>
+            <div className="source-dot">{recipe.source?.[0]?.toUpperCase()}</div>
             <span className="source-name">{recipe.source}</span>
+            {isUnrated && <span className="unrated-tag">✦ Be first to rate</span>}
           </div>
           <div className="card-title">{recipe.title}</div>
           <div className="card-desc">{recipe.description}</div>
@@ -683,10 +662,13 @@ function RecipeCard({ recipe, userRating, onRate, idx }) {
           <div style={{ display: "flex", gap: "1.2rem", alignItems: "center", flexWrap: "wrap" }}>
             <div className="web-rating">
               <span className="rating-label">Web Rating</span>
-              <StarDisplay rating={recipe.webRating} count={recipe.ratingCount} />
+              {isUnrated
+                ? <span style={{ fontSize: "0.82rem", color: "var(--stone-light)", fontStyle: "italic" }}>No rating yet</span>
+                : <StarDisplay rating={recipe.webRating} count={recipe.ratingCount} />
+              }
             </div>
             <div className="your-rating">
-              <span className="rating-label">Your Rating</span>
+              <span className="rating-label">{isUnrated ? "Rate it first!" : "Your Rating"}</span>
               <YourStars value={userRating || 0} onRate={(v) => onRate(recipe.id, v)} />
               {userRating && <span className="rated-badge">✓ You rated {userRating}★</span>}
             </div>
@@ -705,42 +687,12 @@ function RecipeCard({ recipe, userRating, onRate, idx }) {
 }
 
 async function searchRecipes(query) {
-  const systemPrompt = `You are a recipe search engine. When given a search query, return a JSON array of 8 top-rated recipes from across the web for that query.
-
-RETURN ONLY valid JSON. No markdown, no backticks, no explanation. Just the raw JSON array.
-
-Each recipe object must have:
-- id: unique string id
-- title: recipe title (string)
-- source: website/blog name e.g. "Serious Eats", "Sally's Baking Addiction", "NYT Cooking", "Bon Appétit", "The Pioneer Woman", "Food52", "Simply Recipes", "Tastes Better From Scratch", "Minimalist Baker", "Half Baked Harvest" etc.
-- url: a realistic URL to the recipe (use real domain but made up path is fine)
-- description: 1-2 sentence description of the recipe and what makes it special (string)
-- webRating: number between 3.5 and 5.0 (float, 1 decimal place) - the aggregated web rating
-- ratingCount: number of ratings across the web (integer, between 100 and 50000)
-- time: cook/prep time e.g. "45 mins", "1 hr 20 mins" (string)
-- servings: e.g. "8 servings", "12 cookies" (string)
-- difficulty: "Easy", "Medium", or "Hard" (string)
-- image: null (always null)
-
-Make these realistic and varied. Include different sources. Order by webRating descending (best first). Vary the ratings realistically.`;
-
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 2000,
-      system: systemPrompt,
-      messages: [{ role: "user", content: `Search query: "${query}"\n\nReturn 8 top-rated recipes from across the web for this query.` }]
-    })
-  });
+  const response = await fetch(`http://127.0.0.1:8000/search?q=${encodeURIComponent(query)}`);
   const data = await response.json();
-  const text = data.content?.map(b => b.text || "").join("") || "[]";
-  const clean = text.replace(/```json|```/g, "").trim();
-  return JSON.parse(clean);
+  return data.results || [];
 }
 
-export default function Recirate() {
+export default function Flavorank() {
   const [page, setPage] = useState("home");
   const [query, setQuery] = useState("");
   const [searchInput, setSearchInput] = useState("");
@@ -749,6 +701,8 @@ export default function Recirate() {
   const [userRatings, setUserRatings] = useState({});
   const [sortBy, setSortBy] = useState("rating");
   const [minRating, setMinRating] = useState(0);
+  const [cookTime, setCookTime] = useState("Any");
+  const [difficulty, setDifficulty] = useState("Any");
   const [error, setError] = useState(null);
   const inputRef = useRef();
 
@@ -777,19 +731,38 @@ export default function Recirate() {
     setUserRatings(prev => ({ ...prev, [id]: stars }));
   };
 
-  const getSorted = () => {
-    let r = [...recipes].filter(x => x.webRating >= minRating);
-    if (sortBy === "rating") r.sort((a, b) => b.webRating - a.webRating);
-    if (sortBy === "votes") r.sort((a, b) => b.ratingCount - a.ratingCount);
-    if (sortBy === "yours") r.sort((a, b) => (userRatings[b.id] || 0) - (userRatings[a.id] || 0));
-    return r;
+  const parseMins = (timeStr) => {
+    if (!timeStr) return null;
+    const h = timeStr.match(/(\d+)\s*h/i);
+    const m = timeStr.match(/(\d+)\s*m/i);
+    let total = 0;
+    if (h) total += parseInt(h[1]) * 60;
+    if (m) total += parseInt(m[1]);
+    if (!h && !m) { const n = timeStr.match(/\d+/); if (n) total = parseInt(n[0]); }
+    return total || null;
   };
 
-  // Average recirate score combining web + user ratings
-  const recrirateScore = (recipe) => {
-    const ur = userRatings[recipe.id];
-    if (ur) return ((recipe.webRating * 0.7) + (ur * 0.3)).toFixed(1);
-    return recipe.webRating.toFixed(1);
+  const getSorted = () => {
+    let r = [...recipes];
+    if (minRating > 0) r = r.filter(x => !x.unrated && x.webRating >= minRating);
+    if (difficulty !== "Any") r = r.filter(x => x.difficulty === difficulty);
+    if (cookTime !== "Any") r = r.filter(x => {
+      const mins = parseMins(x.time);
+      if (!mins) return false;
+      if (cookTime === "< 30 min") return mins < 30;
+      if (cookTime === "30–60 min") return mins >= 30 && mins <= 60;
+      if (cookTime === "1–2 hrs") return mins > 60 && mins <= 120;
+      if (cookTime === "2+ hrs") return mins > 120;
+      return true;
+    });
+    if (sortBy === "rating") r.sort((a, b) => {
+      if (a.unrated && !b.unrated) return 1;
+      if (!a.unrated && b.unrated) return -1;
+      return (b.webRating || 0) - (a.webRating || 0);
+    });
+    if (sortBy === "votes") r.sort((a, b) => (b.ratingCount || 0) - (a.ratingCount || 0));
+    if (sortBy === "yours") r.sort((a, b) => (userRatings[b.id] || 0) - (userRatings[a.id] || 0));
+    return r;
   };
 
   if (page === "home") return (
@@ -799,9 +772,9 @@ export default function Recirate() {
       <div className="hero-grain" />
       <div className="hero-deco hero-deco-1" />
       <div className="hero-deco hero-deco-2" />
-      <div className="hero-eyebrow">The Web's Best Recipes, Ranked</div>
-      <h1 className="hero-logo">reci<span>rate</span></h1>
-      <p className="hero-tagline">Search the entire web for top-rated recipes — then rate them yourself.</p>
+      <div className="hero-eyebrow">Real Recipes. Real Ratings. Real Cooks.</div>
+      <h1 className="hero-logo">flavo<span>rank</span></h1>
+      <p className="hero-tagline">Search the entire web for top-ranked recipes — then rate them yourself.</p>
       <div className="search-wrap">
         <div className="search-bar">
           <input
@@ -827,13 +800,15 @@ export default function Recirate() {
   );
 
   const sorted = getSorted();
+  const ratedResults = sorted.filter(r => !r.unrated);
+  const unratedResults = sorted.filter(r => r.unrated);
 
   return (
     <div className="page results-page">
       <style>{STYLES}</style>
       <header className="results-header">
         <div className="header-logo" onClick={() => { setPage("home"); setSearchInput(""); setRecipes([]); }}>
-          reci<span>rate</span>
+          flavo<span>rank</span>
         </div>
         <div className="header-search-bar">
           <input
@@ -862,25 +837,22 @@ export default function Recirate() {
               ))}
             </div>
           </div>
-
           <div className="sidebar-section">
             <div className="sidebar-title">🕐 Cook Time</div>
             <div className="filter-pills">
               {["Any", "< 30 min", "30–60 min", "1–2 hrs", "2+ hrs"].map(t => (
-                <button key={t} className="filter-pill">{t}</button>
+                <button key={t} className={`filter-pill ${cookTime === t ? "active" : ""}`} onClick={() => setCookTime(t)}>{t}</button>
               ))}
             </div>
           </div>
-
           <div className="sidebar-section">
             <div className="sidebar-title">📊 Difficulty</div>
             <div className="filter-pills">
               {["Any", "Easy", "Medium", "Hard"].map(d => (
-                <button key={d} className="filter-pill">{d}</button>
+                <button key={d} className={`filter-pill ${difficulty === d ? "active" : ""}`} onClick={() => setDifficulty(d)}>{d}</button>
               ))}
             </div>
           </div>
-
           {Object.keys(userRatings).length > 0 && (
             <div className="sidebar-section">
               <div className="sidebar-title">✨ Your Ratings</div>
@@ -902,7 +874,7 @@ export default function Recirate() {
               <div className="empty-title">Search failed</div>
               <p>{error}</p>
             </div>
-          ) : recipes.length === 0 ? (
+          ) : sorted.length === 0 ? (
             <div className="empty-state">
               <div className="empty-icon">🍳</div>
               <div className="empty-title">No results yet</div>
@@ -913,6 +885,7 @@ export default function Recirate() {
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem", flexWrap: "wrap", gap: "0.5rem" }}>
                 <div className="results-count">
                   Found <strong>{sorted.length}</strong> results for "<strong>{query}</strong>"
+                  {unratedResults.length > 0 && <span style={{ color: "var(--stone-light)", marginLeft: "0.4rem" }}>({unratedResults.length} unrated)</span>}
                 </div>
               </div>
               <div className="sort-row">
@@ -922,15 +895,19 @@ export default function Recirate() {
                 ))}
               </div>
               <div className="recipe-grid">
-                {sorted.map((recipe, idx) => (
-                  <RecipeCard
-                    key={recipe.id}
-                    recipe={recipe}
-                    userRating={userRatings[recipe.id]}
-                    onRate={handleRate}
-                    idx={idx}
-                  />
+                {ratedResults.map((recipe, idx) => (
+                  <RecipeCard key={recipe.id} recipe={recipe} userRating={userRatings[recipe.id]} onRate={handleRate} idx={idx} />
                 ))}
+                {unratedResults.length > 0 && (
+                  <>
+                    <div className="section-divider">
+                      <span>✦ Not yet rated on the web — be the first!</span>
+                    </div>
+                    {unratedResults.map((recipe, idx) => (
+                      <RecipeCard key={recipe.id} recipe={recipe} userRating={userRatings[recipe.id]} onRate={handleRate} idx={ratedResults.length + idx} />
+                    ))}
+                  </>
+                )}
               </div>
             </>
           )}
