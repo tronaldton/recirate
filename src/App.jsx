@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import { supabase } from "./supabaseClient";
+import Auth from "./Auth";
 
 const STYLES = `
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap');
@@ -372,6 +374,8 @@ const STYLES = `
     display: flex;
     transition: box-shadow 0.2s, transform 0.2s;
     cursor: pointer;
+    text-decoration: none;
+    color: inherit;
   }
   .recipe-card:hover {
     box-shadow: 0 8px 32px rgba(196,98,45,0.12);
@@ -509,26 +513,6 @@ const STYLES = `
   .your-star:hover { transform: scale(1.2); }
   .your-star.rated { color: var(--terracotta); }
 
-  .card-link-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--terracotta);
-    text-decoration: none;
-    padding: 0.4rem 0.9rem;
-    border: 1.5px solid rgba(196,98,45,0.25);
-    border-radius: 20px;
-    transition: all 0.18s;
-    margin-left: auto;
-  }
-  .card-link-btn:hover {
-    background: var(--terracotta);
-    color: white;
-    border-color: var(--terracotta);
-  }
-
   .rated-badge {
     display: inline-flex;
     align-items: center;
@@ -624,7 +608,7 @@ function YourStars({ value, onRate }) {
           className={`your-star ${i <= (hover || value) ? "rated" : ""}`}
           onMouseEnter={() => setHover(i)}
           onMouseLeave={() => setHover(0)}
-          onClick={(e) => { e.stopPropagation(); onRate(i); }}
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRate(i); }}
           title={`Rate ${i} star${i > 1 ? "s" : ""}`}
         >★</span>
       ))}
@@ -637,7 +621,13 @@ function RecipeCard({ recipe, userRating, onRate, idx }) {
   const isUnrated = recipe.unrated || !recipe.webRating;
 
   return (
-    <div className={`recipe-card ${isUnrated ? "unrated" : ""}`} style={{ animationDelay: `${idx * 0.07}s` }}>
+    <a
+      href={recipe.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`recipe-card ${isUnrated ? "unrated" : ""}`}
+      style={{ animationDelay: `${idx * 0.07}s` }}
+    >
       <div className="card-image">
         {recipe.image ? (
           <img src={recipe.image} alt={recipe.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => { e.target.style.display = "none"; }} />
@@ -667,22 +657,18 @@ function RecipeCard({ recipe, userRating, onRate, idx }) {
                 : <StarDisplay rating={recipe.webRating} count={recipe.ratingCount} />
               }
             </div>
-            <div className="your-rating">
+            <div
+              className="your-rating"
+              onClick={e => { e.preventDefault(); e.stopPropagation(); }}
+            >
               <span className="rating-label">{isUnrated ? "Rate it first!" : "Your Rating"}</span>
               <YourStars value={userRating || 0} onRate={(v) => onRate(recipe.id, v)} />
               {userRating && <span className="rated-badge">✓ You rated {userRating}★</span>}
             </div>
           </div>
-          <a
-            href={recipe.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="card-link-btn"
-            onClick={e => e.stopPropagation()}
-          >View Recipe ↗</a>
         </div>
       </div>
-    </div>
+    </a>
   );
 }
 
@@ -704,7 +690,20 @@ export default function Flavorank() {
   const [cookTime, setCookTime] = useState("Any");
   const [difficulty, setDifficulty] = useState("Any");
   const [error, setError] = useState(null);
+  const [user, setUser] = useState(null);
+  const [showAuth, setShowAuth] = useState(false);
   const inputRef = useRef();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user) setShowAuth(false);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     if (page === "home" && inputRef.current) inputRef.current.focus();
@@ -765,6 +764,21 @@ export default function Flavorank() {
     return r;
   };
 
+  const AuthModal = () => showAuth ? (
+    <div
+      onClick={() => setShowAuth(false)}
+      style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center" }}
+    >
+      <div
+        onClick={e => e.stopPropagation()}
+        style={{ background: "white", borderRadius: "20px", padding: "2rem", width: "100%", maxWidth: "400px", margin: "1rem" }}
+      >
+        <h2 style={{ fontFamily: "Playfair Display, serif", marginBottom: "1.5rem", color: "#1C1A17" }}>Sign in to Flavorank</h2>
+        <Auth />
+      </div>
+    </div>
+  ) : null;
+
   if (page === "home") return (
     <div className="page hero">
       <style>{STYLES}</style>
@@ -772,6 +786,15 @@ export default function Flavorank() {
       <div className="hero-grain" />
       <div className="hero-deco hero-deco-1" />
       <div className="hero-deco hero-deco-2" />
+
+      <div style={{ position: "absolute", top: "1.5rem", right: "2rem", zIndex: 10 }}>
+        {user ? (
+          <button onClick={() => supabase.auth.signOut()} className="search-btn">Sign Out</button>
+        ) : (
+          <button onClick={() => setShowAuth(true)} className="search-btn">Sign In</button>
+        )}
+      </div>
+
       <div className="hero-eyebrow">Real Recipes. Real Ratings. Real Cooks.</div>
       <h1 className="hero-logo">flavo<span>rank</span></h1>
       <p className="hero-tagline">Search the entire web for top-ranked recipes — then rate them yourself.</p>
@@ -796,6 +819,7 @@ export default function Flavorank() {
           <button key={s} className="suggestion-pill" onClick={() => { setSearchInput(s); handleSearch(s); }}>{s}</button>
         ))}
       </div>
+      <AuthModal />
     </div>
   );
 
@@ -821,6 +845,13 @@ export default function Flavorank() {
           <button className="header-search-btn" onClick={() => handleSearch()} disabled={loading}>
             {loading ? "…" : "Search"}
           </button>
+        </div>
+        <div style={{ marginLeft: "auto", flexShrink: 0 }}>
+          {user ? (
+            <button onClick={() => supabase.auth.signOut()} className="search-btn">Sign Out</button>
+          ) : (
+            <button onClick={() => setShowAuth(true)} className="search-btn">Sign In</button>
+          )}
         </div>
       </header>
 
@@ -857,6 +888,12 @@ export default function Flavorank() {
             <div className="sidebar-section">
               <div className="sidebar-title">✨ Your Ratings</div>
               <p style={{ fontSize: "0.82rem", color: "var(--stone)" }}>You've rated <strong style={{ color: "var(--terracotta)" }}>{Object.keys(userRatings).length}</strong> recipe{Object.keys(userRatings).length > 1 ? "s" : ""} in this search.</p>
+            </div>
+          )}
+          {user && (
+            <div className="sidebar-section">
+              <div className="sidebar-title">👤 Signed In</div>
+              <p style={{ fontSize: "0.82rem", color: "var(--stone)" }}>{user.email || "Google User"}</p>
             </div>
           )}
         </aside>
@@ -913,6 +950,7 @@ export default function Flavorank() {
           )}
         </main>
       </div>
+      <AuthModal />
     </div>
   );
 }
